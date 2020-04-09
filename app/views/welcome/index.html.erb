@@ -1,6 +1,5 @@
 <div class="container">
 	<h1 style="text-align: center;">Le Admin</h1>
-
 <nav>
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
     <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Store</a>
@@ -63,7 +62,7 @@
 	      <tr>
 	        <td><%= product.name %></td>
 	        <td><%= product.color %></td>
-	        <td><%= product.category_id %></td>
+	        <td><%= product.category.name %></td>
 	        <td><%= product.size %></td>
 	        <td><%= product.price %></td>
 	        <td><%= product.store.name %></td>
@@ -81,6 +80,7 @@
 	    <tr>
 	      <th>Name</th>
 	      <th colspan="3"></th>
+	      <th colspan="3"></th>
 	    </tr>
 	  </thead>
 
@@ -91,6 +91,7 @@
 	        <td><a href="" data-toggle="modal" data-target="#updateModal-<%= category.id %>">
 			  Update
 			</a></td>
+			<td><%= link_to 'Destroy', category, method: :delete, data: { confirm: 'Are you sure?' } %></td>
 
 <div class="modal fade" id="updateModal-<%= category.id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
