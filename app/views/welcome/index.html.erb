@@ -1,0 +1,47 @@
+<div class="container">
+	<h1 style="text-align: center;">Le Admin</h1>
+
+<nav>
+  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Store</a>
+    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Product</a>
+    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Category</a>
+  </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+  	<table class="table">
+	  <thead>
+	    <tr>
+	      <th scope="col">Name</th>
+	      <th scope="col">Street</th>
+	      <th scope="col">Number</th>
+	      <th scope="col">Zip code</th>
+	      <th scope="col">City</th>
+	      <th scope="col">Country</th>
+	      <th cope="col"></th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tr>
+	      <% @stores.each do |store| %>
+	      	<td><%= store.name %></td>
+	        <td><%= store.street %></td>
+	        <td><%= store.number %></td>
+	        <td><%= store.zip_code %></td>
+	        <td><%= store.city %></td>
+	        <td><%= store.country %></td>
+	        <td><%= link_to 'Update', edit_store_path(store) %></td>
+	      <% end %>
+	    </tr>
+	  </tbody>
+	</table>
+
+	<!-- <button type="button" class="btn btn-success">Success</button> -->
+	<%= link_to 'Create', new_store_path %>
+
+  </div>
+  <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">Product</div>
+  <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">Category</div>
+</div>
+</div>

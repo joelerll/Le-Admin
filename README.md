@@ -7,9 +7,19 @@ Things you may want to cover:
 
 * Ruby version
 
+- ruby 2.7.0p0
+
+
 * System dependencies
 
+- Ruby >= 2.7
+- Nodejs >= 12
+- Mysql >= 8.0.19
+
+
 * Configuration
+
+sudo apt-get install libmysql-ruby libmysqlclient-dev #for mysql gem
 
 * Database creation
 
@@ -21,4 +31,8 @@ Things you may want to cover:
 
 * Deployment instructions
 
-* ...
+* Production
+
+- rake db:create:all
+- RAILS_ENV=production rails s
+- RAILS_ENV=production rails db:migrate
