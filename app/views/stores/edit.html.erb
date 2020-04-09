@@ -1,6 +1,7 @@
 <div class="container">
 	<h1>Editing Store</h1>
-	<form  action="/stores/<%= @store.id %>"  accept-charset="UTF-8" class="update_store" id="update_store" method="put">
+	<form  action="/stores/<%= @store.id %>"  accept-charset="UTF-8" method="post">
+	  <input type="hidden" name="_method" value="patch">
 	  <div class="form-group">
 	    <label for="store[name]" >Name</label>
 	    <input type="text" class="form-control" id="store[name]" name="store[name]" aria-describedby="store[name]" value="<%= @store.name %>">
@@ -25,7 +26,7 @@
 	    <label for="store[country]" >Country</label>
 	    <input type="text" class="form-control" id="store[country]" name="store[country]" aria-describedby="store[country]" value="<%= @store.country %>">
 	  </div>
-	  <button type="submit"   name="commit"  class="btn btn-primary">Submit</button>
+	  <button type="submit"  value="Update Store" data-disable-with="Update Store"  class="btn btn-primary">Submit</button>
 	</form>
 
 	<%= link_to 'Back', root_path %>
