@@ -1,6 +1,32 @@
-<h1>Editing Store</h1>
+<div class="container">
+	<h1>Editing Store</h1>
+	<form  action="/stores/<%= @store.id %>"  accept-charset="UTF-8" class="update_store" id="update_store" method="PATCH">
+	  <div class="form-group">
+	    <label for="store[name]" >Name</label>
+	    <input type="text" class="form-control" id="store[name]" name="store[name]" aria-describedby="store[name]" value="<%= @store.name %>">
+	   </div>
+	  <div class="form-group">
+	    <label for="store[street]" >Street</label>
+	    <input type="text" class="form-control" id="store[street]" name="store[street]" aria-describedby="store[street]" value="<%= @store.street %>">
+	  </div>
+	  <div class="form-group">
+	    <label for="store[number]" >Number</label>
+	    <input type="text" class="form-control" id="store[number]" name="store[number]" aria-describedby="store[number]" value="<%= @store.number %>">
+	  </div>
+	  <div class="form-group">
+	    <label for="store[zip_code]" >Zip code</label>
+	    <input type="text" class="form-control" id="store[zip_code]" name="store[zip_code]" aria-describedby="store[zip_code]" value="<%= @store.zip_code %>">
+	  </div>
+	  <div class="form-group">
+	    <label for="store[city]" >City</label>
+	    <input type="text" class="form-control" id="store[city]" name="store[city]" aria-describedby="store[city]" value="<%= @store.city %>">
+	  </div>
+	  <div class="form-group">
+	    <label for="store[country]" >Country</label>
+	    <input type="text" class="form-control" id="store[country]" name="store[country]" aria-describedby="store[country]" value="<%= @store.country %>">
+	  </div>
+	  <button type="submit"   name="commit"  class="btn btn-primary">Submit</button>
+	</form>
 
-<%= render 'form', store: @store %>
-
-<%= link_to 'Show', @store %> |
-<%= link_to 'Back', stores_path %>
+	<%= link_to 'Back', root_path %>
+</div>
