@@ -34,7 +34,16 @@
 	    	<% end %>
 	    </select>
 	   </div>
-	  <button type="submit"  value="Update Store" data-disable-with="Update Store"  class="btn btn-primary">Submit</button>
+	   <div class="form-group">
+			<div class="row justify-content-start">
+				<div class="col-4">
+					<button type="submit"  value="Update Store" data-disable-with="Update Store"  class="btn btn-primary btn-lg">Submit</button>
+				</div>
+				<div class="col-4">
+					<a href="/"><button href="/" class="btn btn-danger btn-lg">Cancel</button></a>
+				</div>
+			</div>
+	    </div>
 	</form>
 
 	<%= link_to 'Back', root_path %>

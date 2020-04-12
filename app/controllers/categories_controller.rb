@@ -31,7 +31,6 @@ class CategoriesController < ApplicationController
         keywords.each do |keyword|
           @keyword = Keyword.new({ "name" => keyword, "category_id" => @category.id })
           @keyword.save
-          Rails.logger.info(@keyword)
         end
         format.html { redirect_to root_path, notice: 'Category was successfully created.' }
         format.json { render :show, status: :created, location: @category }
@@ -45,8 +44,14 @@ class CategoriesController < ApplicationController
   # PATCH/PUT /categories/1
   # PATCH/PUT /categories/1.json
   def update
+    keywords = category_params[:keywords].split(",")
     respond_to do |format|
-      if @category.update(category_params)
+      if @category.update({ "name" => category_params[:name] })
+        Keyword.where(category_id: @category.id).destroy_all
+        keywords.each do |keyword|
+          @keyword = Keyword.new({ "name" => keyword, "category_id" => @category.id })
+          @keyword.save
+        end
         format.html { redirect_to root_path, notice: 'Category was successfully updated.' }
         format.json { render :show, status: :ok, location: @category }
       else

@@ -113,37 +113,41 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form  action="/categories/<%= category.id %>"  accept-charset="UTF-8" class="edit_store" id="edit_store" method="put">
-      <div class="modal-body">
-		<div class="form-group">
-			<label for="category[name]" >Name</label>
-			<input type="text" class="form-control" id="category[name]" name="category[name]" aria-describedby="category[name]" value="<%= category.name %>">
-		</div>
-		<div class="form-group">
-			 <h5>Keywords</h5>
-			 <% @keywords.each do |keyword| %>
-				<% if keyword.category_id == category.id%>
-				<div class="container">
-					<div class="row">
-						<div class="col-sm">
-							<%= keyword.name %>
+      <form  action="/categories/<%= category.id %>"  accept-charset="UTF-8" class="edit_category" id="edit_category" method="post">
+		<input type="hidden" name="_method" value="patch">
+		<div class="modal-body">
+			<div class="form-group">
+				<label for="category[name]" >Name</label>
+				<input type="text" class="form-control" id="category[name]" name="category[name]" aria-describedby="category[name]" value="<%= category.name %>">
+			</div>
+			<div class="form-group" id="keyword-edit">
+				<h5>Keywords</h5>
+				 <input type="hidden" class="form-control" id='category[keywords].edit'  name="category[keywords]" aria-describedby="category[keywords]">
+				<button style="background:transparent; border: 0;" ></button>
+				<input type="text" id="addKeywordEdit"  class="form-control myInputEdit" placeholder="Write the keyword and press enter">
+				<br>
+				<div id="keyword-body-edit">
+					<% @keywords.each do |keyword| %>
+						<% if keyword.category_id == category.id%>
+						<div class="container">
+							<div class="row">
+								<div class="col-sm">
+									<%= keyword.name %>
+								</div>
+								<div class="col-sm">
+									<a href="javascript:void(0);"  id="keyword-<%= keyword.category_id %>" onclick="deleteKeyword(this)">Delete</a>
+								</div>
+							</div>
 						</div>
-						<div class="col-sm">
-							<svg style="color: red;" class="bi bi-trash" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-								<path d="M5.5 5.5A.5.5 0 016 6v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm2.5 0a.5.5 0 01.5.5v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm3 .5a.5.5 0 00-1 0v6a.5.5 0 001 0V6z"/>
-								<path fill-rule="evenodd" d="M14.5 3a1 1 0 01-1 1H13v9a2 2 0 01-2 2H5a2 2 0 01-2-2V4h-.5a1 1 0 01-1-1V2a1 1 0 011-1H6a1 1 0 011-1h2a1 1 0 011 1h3.5a1 1 0 011 1v1zM4.118 4L4 4.059V13a1 1 0 001 1h6a1 1 0 001-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" clip-rule="evenodd"/>
-							</svg>
-						</div>
-					</div>
+						<% end %>
+					<% end %>
 				</div>
-				<% end %>
-			<% end %>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit"   name="commit"  class="btn btn-primary">Submit</button>
-      </div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+			<button type="submit"   name="commit"  class="btn btn-primary">Submit</button>
+		</div>
       </form>
     </div>
   </div>
@@ -162,7 +166,7 @@
 </a>
 
 
-<!-- Modal -->
+<!-- Modal Create Category -->
 <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -180,23 +184,16 @@
 		</div>
 		<div class="form-group">
 			 <h5>Keywords</h5>
-			 <input type="hidden" class="form-control" id='category[keywords]'  name="category[keywords]" aria-describedby="category[keywords]">
-			<input type="text" class="form-control" id='myInput' placeholder="Write the keyword and press enter">
+			 <input type="hidden" class="form-control" id='category[keywords].create'  name="category[keywords]" aria-describedby="category[keywords]">
 			<button id="addKeyword" style="background:transparent; border: 0;" ></button>
-			<table class="table  table-striped">
-				<thead>
-					<tr>
-						<th scope="col">Name</th>
-						<th scope="col"></th>
-					</tr>
-				</thead>
-				<tbody id="keyword-body">
-				</tbody>
-			</table>
+			<input type="text" class="form-control" id='myInput' placeholder="Write the keyword and press enter">
+			<br>
+			<div id="keyword-body">
+			 </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
         <button type="submit"   name="commit"  class="btn btn-primary">Submit</button>
       </div>
       </form>
@@ -211,14 +208,49 @@
 
 <script>
 	var buttonKeyword = document.getElementById("addKeyword");
+	var buttonKeywordEdit = document.getElementById("addKeywordEdit");
 	var inputKeyword = document.getElementById("myInput");
+
+	function generateTemplate (data) {
+		return `<div class="row">
+						<div class="col-sm">
+							${data}
+						</div>
+						<div class="col-sm">
+							<a href="javascript:void(0);" onclick="deleteKeyword(this)">Delete</a>
+						</div>
+					</div>`
+	}
+
+	function deleteKeyword (element) {
+		element.parentElement.parentElement.parentElement.remove();
+		var table = document.getElementById("keyword-body");
+		var keys = getKeywords(table);
+		var keywords = document.getElementById("category[keywords].create");
+		keywords.value = keys
+	}
+
+	
+	$('.myInputEdit').keydown(function (e) {
+		if (e.keyCode == 13) {
+			e.preventDefault();
+        	return false;
+		}
+	})
+
+	$('myInput').keydown(function (e) {
+		if (e.keyCode == 13) {
+			e.preventDefault();
+        	return false;
+		}
+	})
 	
 	function getKeywords (table) {
 		var keywordsSend = []
 		var arr = Array.prototype.slice.call( table.children );
 		arr.forEach(element => {
-			var keywordWrite = element.children[0].innerHTML;
-			keywordsSend.push(keywordWrite);
+			var keywordWrite = element.children[0].children[0].innerHTML;
+			keywordsSend.push(keywordWrite.trim());
 		});
 		keywordsSend = keywordsSend.join(",")
 		return keywordsSend
@@ -229,22 +261,23 @@
 		keywords = getKeywords(table)
 	})
 
+	// buttonKeywordEdit.addEventListener("click",function(e) {
+	// 	e.preventDefault();
+	// 	console.log('asd')
+	// })
+
 	buttonKeyword.addEventListener("click",function(e) {
 		e.preventDefault();
 		var value = inputKeyword.value;
 		inputKeyword.value = "";
 		var table = document.getElementById("keyword-body");
-		
-		var nodeTR = document.createElement("TR"); 
-		var nodeTD = document.createElement("TD");
-		var nodeTDdelete = document.createElement("TD");
-		table.appendChild(nodeTR);
-		nodeTR.appendChild(nodeTD);
-		nodeTR.appendChild(nodeTDdelete);
-		nodeTDdelete.innerHTML = "Delete";
-		nodeTD.innerHTML = value;
-		var keys = getKeywords(table)
-		var keywords = document.getElementById("category[keywords]");
+		var nodeDIV = document.createElement("DIV");
+		nodeDIV.classList.add("container");
+		var template = generateTemplate(value);
+		nodeDIV.innerHTML = template
+		table.appendChild(nodeDIV);
+		var keywords = document.getElementById("category[keywords].create");
+		var keys = getKeywords(table);
 		keywords.value = keys
 	});
 </script>

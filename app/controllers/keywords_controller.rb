@@ -28,7 +28,7 @@ class KeywordsController < ApplicationController
 
     respond_to do |format|
       if @keyword.save
-        format.html { redirect_to @keyword, notice: 'Keyword was successfully created.' }
+        format.html { redirect_to root_path, notice: 'Keyword was successfully created.' }
         format.json { render :show, status: :created, location: @keyword }
       else
         format.html { render :new }
@@ -42,7 +42,7 @@ class KeywordsController < ApplicationController
   def update
     respond_to do |format|
       if @keyword.update(keyword_params)
-        format.html { redirect_to @keyword, notice: 'Keyword was successfully updated.' }
+        format.html { redirect_to root_path, notice: 'Keyword was successfully updated.' }
         format.json { render :show, status: :ok, location: @keyword }
       else
         format.html { render :edit }
