@@ -45,6 +45,7 @@ class CategoriesController < ApplicationController
   # PATCH/PUT /categories/1.json
   def update
     keywords = category_params[:keywords].split(",")
+    Rails.logger.debug(keywords)
     respond_to do |format|
       if @category.update({ "name" => category_params[:name] })
         Keyword.where(category_id: @category.id).destroy_all

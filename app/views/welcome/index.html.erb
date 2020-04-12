@@ -98,7 +98,7 @@
 	    <% @categories.each do |category| %>
 	      <tr>
 	        <td><%= category.name %></td>
-	        <td><a href="" data-toggle="modal" data-target="#updateModal-<%= category.id %>">
+	        <td><a href="" data-toggle="modal" data-target="#updateModal-<%= category.id %>" id="update-<%= category.id %>" class="update">
 			  Update
 			</a></td>
 			<td><%= link_to 'Destroy', category, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -122,11 +122,15 @@
 			</div>
 			<div class="form-group" id="keyword-edit">
 				<h5>Keywords</h5>
-				 <input type="hidden" class="form-control" id='category[keywords].edit'  name="category[keywords]" aria-describedby="category[keywords]">
-				<button style="background:transparent; border: 0;" ></button>
-				<input type="text" id="addKeywordEdit"  class="form-control myInputEdit" placeholder="Write the keyword and press enter">
+				<% x = @keywords.select { |keyword| keyword.category_id == category.id } %>
+				<% data = [] %>
+				<% x.each do |key| %>
+					<% data.push(key.name) %>
+				<% end %>
+				 <input type="hidden" class="form-control" id='category[keywords].edit-<%= category.id %>'  name="category[keywords]" aria-describedby="category[keywords]" value="<%= data.join(",")%>">
+				<input type="text" id="addKeywordEdit"  id-target="<%= category.id %>" class="form-control myInputEdit" placeholder="Write the keyword and press enter">
 				<br>
-				<div id="keyword-body-edit">
+				<div id="keyword-body-edit-<%= category.id %>">
 					<% @keywords.each do |keyword| %>
 						<% if keyword.category_id == category.id%>
 						<div class="container">
@@ -135,7 +139,7 @@
 									<%= keyword.name %>
 								</div>
 								<div class="col-sm">
-									<a href="javascript:void(0);"  id="keyword-<%= keyword.category_id %>" onclick="deleteKeyword(this)">Delete</a>
+									<a href="javascript:void(0);"  id-target="<%= keyword.category_id %>" onclick="deleteKeywordEdit(this)">Delete</a>
 								</div>
 							</div>
 						</div>
@@ -211,6 +215,24 @@
 	var buttonKeywordEdit = document.getElementById("addKeywordEdit");
 	var inputKeyword = document.getElementById("myInput");
 
+	function deleteKeyword (element) {
+		element.parentElement.parentElement.parentElement.remove();
+		var table = document.getElementById("keyword-body");
+		var keys = getKeywords(table);
+		var keywords = document.getElementById("category[keywords].create");
+		keywords.value = keys
+	}
+
+	function deleteKeywordEdit (element) {
+		var inputKeyword = element;
+		var id = inputKeyword.getAttribute('id-target')
+		var table = document.getElementById("keyword-body-edit-" + id);
+		element.parentElement.parentElement.parentElement.remove();
+		var keys = getKeywords(table);
+		var keywords = document.getElementById("category[keywords].edit-" + id);
+		keywords.value = keys
+	}
+
 	function generateTemplate (data) {
 		return `<div class="row">
 						<div class="col-sm">
@@ -222,18 +244,33 @@
 					</div>`
 	}
 
-	function deleteKeyword (element) {
-		element.parentElement.parentElement.parentElement.remove();
-		var table = document.getElementById("keyword-body");
-		var keys = getKeywords(table);
-		var keywords = document.getElementById("category[keywords].create");
-		keywords.value = keys
+	function generateTemplateEdit (data) {
+		return `<div class="row">
+				<div class="col-sm">
+					${data}
+				</div>
+				<div class="col-sm">
+					<a href="javascript:void(0);" onclick="deleteKeywordEdit(this)">Delete</a>
+				</div>
+			</div>`
 	}
 
-	
 	$('.myInputEdit').keydown(function (e) {
 		if (e.keyCode == 13) {
 			e.preventDefault();
+			var inputKeyword = e.target;
+			var id = inputKeyword.getAttribute('id-target')
+			var value = inputKeyword.value;
+			inputKeyword.value = "";
+			var table = document.getElementById("keyword-body-edit-" + id);
+			var nodeDIV = document.createElement("DIV");
+			nodeDIV.classList.add("container");
+			var template = generateTemplateEdit(value);
+			nodeDIV.innerHTML = template
+			table.appendChild(nodeDIV);
+			var keywords = document.getElementById("category[keywords].edit-" + id);
+			var keys = getKeywords(table);
+			keywords.value = keys
         	return false;
 		}
 	})
