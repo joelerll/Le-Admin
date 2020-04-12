@@ -24,10 +24,15 @@ class CategoriesController < ApplicationController
   # POST /categories
   # POST /categories.json
   def create
-    @category = Category.new(category_params)
-
+    @category = Category.new({ "name" => category_params[:name] })
+    keywords = category_params[:keywords].split(",")
     respond_to do |format|
       if @category.save
+        keywords.each do |keyword|
+          @keyword = Keyword.new({ "name" => keyword, "category_id" => @category.id })
+          @keyword.save
+          Rails.logger.info(@keyword)
+        end
         format.html { redirect_to root_path, notice: 'Category was successfully created.' }
         format.json { render :show, status: :created, location: @category }
       else
@@ -69,6 +74,6 @@ class CategoriesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def category_params
-      params.require(:category).permit(:name)
+      params.require(:category).permit(:name, :keywords)
     end
 end

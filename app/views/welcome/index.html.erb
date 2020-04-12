@@ -7,9 +7,12 @@
     <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Category</a>
   </div>
 </nav>
+
 <div class="tab-content" id="nav-tabContent">
-  <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-  	<table class="table">
+
+<%# tab stores  %>
+  <div class="tab-pane fade" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+  	<table class="table  table-striped">
 	  <thead>
 	    <tr>
 	      <th scope="col">Name</th>
@@ -33,7 +36,9 @@
 		        <td><%= store.city %></td>
 		        <td><%= store.country %></td>
 		        <td><%= link_to 'Update', edit_store_path(store) %></td>
-		        <td><%= link_to 'Destroy', store, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+		        <td>
+					<%= link_to 'Destroy', store, method: :delete, data: { confirm: 'Are you sure?' } %>
+				</td>
 	        </tr>
 	      <% end %>
 	  </tbody>
@@ -42,17 +47,20 @@
 	<%= link_to 'Create', new_store_path %>
 
   </div>
+
+
+<%# tab products %>
   <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-  	<table class="table">
+  	<table class="table table-striped">
 	  <thead>
 	    <tr>
-	      <th>Name</th>
-	      <th>Color</th>
-	      <th>Category</th>
-	      <th>Size</th>
-	      <th>Price</th>
-	      <th>Store</th>
-	      <th colspan="3"></th>
+	      <th scope="col">Name</th>
+	      <th scope="col">Color</th>
+	      <th scope="col">Category</th>
+	      <th scope="col">Size</th>
+	      <th scope="col">Price</th>
+	      <th scope="col">Store</th>
+	      <th scope="col"></th>
 	      <th cope="col"></th>
 	    </tr>
 	  </thead>
@@ -74,13 +82,15 @@
 	</table>
 	<%= link_to 'Create', new_product_path %>
   </div>
-  <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-  	<table class="table">
+  
+<%# tab categories %>
+  <div class="tab-pane fade show active" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+  	<table class="table  table-striped">
 	  <thead>
 	    <tr>
-	      <th>Name</th>
-	      <th colspan="3"></th>
-	      <th colspan="3"></th>
+	      <th scope="col">Name</th>
+	      <th scope="col"></th>
+	      <th scope="col"></th>
 	    </tr>
 	  </thead>
 
@@ -93,6 +103,7 @@
 			</a></td>
 			<td><%= link_to 'Destroy', category, method: :delete, data: { confirm: 'Are you sure?' } %></td>
 
+
 <div class="modal fade" id="updateModal-<%= category.id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -104,10 +115,30 @@
       </div>
       <form  action="/categories/<%= category.id %>"  accept-charset="UTF-8" class="edit_store" id="edit_store" method="put">
       <div class="modal-body">
-			  <div class="form-group">
-			    <label for="category[name]" >Name</label>
-			    <input type="text" class="form-control" id="category[name]" name="category[name]" aria-describedby="category[name]" value="<%= category.name %>">
-			   </div>
+		<div class="form-group">
+			<label for="category[name]" >Name</label>
+			<input type="text" class="form-control" id="category[name]" name="category[name]" aria-describedby="category[name]" value="<%= category.name %>">
+		</div>
+		<div class="form-group">
+			 <h5>Keywords</h5>
+			 <% @keywords.each do |keyword| %>
+				<% if keyword.category_id == category.id%>
+				<div class="container">
+					<div class="row">
+						<div class="col-sm">
+							<%= keyword.name %>
+						</div>
+						<div class="col-sm">
+							<svg style="color: red;" class="bi bi-trash" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+								<path d="M5.5 5.5A.5.5 0 016 6v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm2.5 0a.5.5 0 01.5.5v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm3 .5a.5.5 0 00-1 0v6a.5.5 0 001 0V6z"/>
+								<path fill-rule="evenodd" d="M14.5 3a1 1 0 01-1 1H13v9a2 2 0 01-2 2H5a2 2 0 01-2-2V4h-.5a1 1 0 01-1-1V2a1 1 0 011-1H6a1 1 0 011-1h2a1 1 0 011 1h3.5a1 1 0 011 1v1zM4.118 4L4 4.059V13a1 1 0 001 1h6a1 1 0 001-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" clip-rule="evenodd"/>
+							</svg>
+						</div>
+					</div>
+				</div>
+				<% end %>
+			<% end %>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -143,10 +174,26 @@
       </div>
       <form  action="/categories"  accept-charset="UTF-8" class="new_store" id="new_store" method="post">
       <div class="modal-body">
-			  <div class="form-group">
-			    <label for="category[name]" >Name</label>
-			    <input type="text" class="form-control" id="category[name]" name="category[name]" aria-describedby="category[name]">
-			   </div>
+		<div class="form-group">
+			<label for="category[name]" >Name</label>
+			<input type="text"  id="category[name]" name="category[name]" aria-describedby="category[name]" class="form-control">
+		</div>
+		<div class="form-group">
+			 <h5>Keywords</h5>
+			 <input type="hidden" class="form-control" id='category[keywords]'  name="category[keywords]" aria-describedby="category[keywords]">
+			<input type="text" class="form-control" id='myInput' placeholder="Write the keyword and press enter">
+			<button id="addKeyword" style="background:transparent; border: 0;" ></button>
+			<table class="table  table-striped">
+				<thead>
+					<tr>
+						<th scope="col">Name</th>
+						<th scope="col"></th>
+					</tr>
+				</thead>
+				<tbody id="keyword-body">
+				</tbody>
+			</table>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -160,3 +207,44 @@
   </div>
 </div>
 </div>
+
+
+<script>
+	var buttonKeyword = document.getElementById("addKeyword");
+	var inputKeyword = document.getElementById("myInput");
+	
+	function getKeywords (table) {
+		var keywordsSend = []
+		var arr = Array.prototype.slice.call( table.children );
+		arr.forEach(element => {
+			var keywordWrite = element.children[0].innerHTML;
+			keywordsSend.push(keywordWrite);
+		});
+		keywordsSend = keywordsSend.join(",")
+		return keywordsSend
+	}
+
+	window.addEventListener('load', function () {
+		var table = document.getElementById("keyword-body");
+		keywords = getKeywords(table)
+	})
+
+	buttonKeyword.addEventListener("click",function(e) {
+		e.preventDefault();
+		var value = inputKeyword.value;
+		inputKeyword.value = "";
+		var table = document.getElementById("keyword-body");
+		
+		var nodeTR = document.createElement("TR"); 
+		var nodeTD = document.createElement("TD");
+		var nodeTDdelete = document.createElement("TD");
+		table.appendChild(nodeTR);
+		nodeTR.appendChild(nodeTD);
+		nodeTR.appendChild(nodeTDdelete);
+		nodeTDdelete.innerHTML = "Delete";
+		nodeTD.innerHTML = value;
+		var keys = getKeywords(table)
+		var keywords = document.getElementById("category[keywords]");
+		keywords.value = keys
+	});
+</script>

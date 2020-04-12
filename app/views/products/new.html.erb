@@ -34,8 +34,29 @@
 	    	<% end %>
 	    </select>
 	   </div>
-	  <button type="submit"  value="Update Store" data-disable-with="Update Store"  class="btn btn-primary">Submit</button>
+	   <% if !@categories.empty? && !@stores.empty? then %>
+	    <div class="container">
+			<div class="row justify-content-start">
+				<div class="col-4">
+					<button type="submit"  value="Update Store" data-disable-with="Update Store"  class="btn btn-primary btn-lg">Submit</button>
+				</div>
+				<div class="col-4">
+					<a href="/"><button href="/" class="btn btn-danger btn-lg">Cancel</button></a>
+				</div>
+			</div>
+		</div>
+	   		
+	   <% else %>
+			<div class="container">
+				<div class="row justify-content-start">
+					<div class="col-4">
+						<button type="submit"  value="Update Store" disabled data-disable-with="Update Store"  class="btn btn-secondary btn-lg disabled">Submit</button>
+					</div>
+					<div class="col-4">
+						<a href="/"><button href="/" class="btn btn-danger btn-lg">Cancel</button></a>
+					</div>
+				</div>
+			</div>
+	   <% end %>
 	</form>
-
-	<%= link_to 'Back', root_path %>
 </div>
