@@ -12,7 +12,7 @@
 - Mysql >= 8.0.19
 
 
-* Database creation
+## Database creation
 
 1. Clone repository
 
@@ -61,7 +61,7 @@ rails db:create
 rails db:migrate
 ```
 
-8. Run seeds
+8. Run seeds. You dont need the .sql for populate the database.
 
 ```sh
 rails db:seed
