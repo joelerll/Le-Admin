@@ -1,41 +1,77 @@
-# README
+# Le admin
 
-<!-- set password data 
-https://www.techrepublic.com/article/how-to-set-change-and-recover-a-mysql-root-password/ -->
-
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
+## Ruby version
 
 - ruby 2.7.0p0
 
 
-* System dependencies
+# System dependencies
 
 - Ruby >= 2.7
 - Nodejs >= 12
 - Mysql >= 8.0.19
 
 
-* Configuration
-
-sudo apt-get install libmysql-ruby libmysqlclient-dev #for mysql gem
-
 * Database creation
 
-* Database initialization
+1. Clone repository
 
-* How to run the test suite
+```sh
+git clone https://github.com/joelerll/Le-Admin.git
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+2. Move to folder
 
-* Deployment instructions
+```sh
+cd Le-Admin
+```
 
-* Production
+3. Install nodejs repostories
 
-- rake db:create:all
-- RAILS_ENV=production rails s
-- RAILS_ENV=production rails db:migrate
+```sh
+yarn install
+```
+
+4. Install ruby dependencies
+
+```sh
+bundle install
+```
+
+5. Config datbase.yml
+
+```yml
+development:
+  adapter: mysql2
+  host: localhost
+  database: le_admin
+  username: root
+  password: joelerl # change this password
+```
+
+6. Init database
+
+```sh
+rails db:create
+```
+
+7. Run migrations
+
+```sh
+rails db:migrate
+```
+
+8. Run seeds
+
+```sh
+rails db:seed
+```
+
+9. Run database
+
+```sh
+rails s
+```
+
+10. [Go to](http://localhost:3000/)
+
