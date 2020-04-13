@@ -10,6 +10,7 @@
 - Ruby >= 2.7
 - Nodejs >= 12
 - Mysql >= 8.0.19
+- Yarn >= 1.22.4
 
 
 ## Database creation
